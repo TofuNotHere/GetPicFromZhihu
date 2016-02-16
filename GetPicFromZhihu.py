@@ -21,7 +21,7 @@ answers_l = urllib.request.urlopen(url).read().decode('utf-8')
 answers = re.findall('h3 data-num="(.*?)"', answers_l)
 limits = int(answers[0])
 page_size = 20
-print('此问题下共有%d个答案，分为%d部分' % (limits, (limits+1)/20 +1))
+print('此问题下共有%d个答案，分为%d部分' % (limits, (limits+1)/20 +1),end='')
 
 while offset < limits:
     post_url = "http://www.zhihu.com/node/QuestionAnswerListV2"
@@ -44,7 +44,7 @@ while offset < limits:
     answer_list = response.json()["msg"]
     img_urls = re.findall('img .*?src="(.*?_b.*?)"', ''.join(answer_list))
     i = 0
-    print('第%d部分,共有%d张图片' % ((offset+1)/20 + 1,int(len(img_urls)/2)))
+    print('\n第%d部分,共有%d张图片' % ((offset+1)/20 + 1,int(len(img_urls)/2)))
     for img_url in img_urls:
         if img_url[0] == '/':
             continue
@@ -59,4 +59,5 @@ while offset < limits:
             print("\r已下载%d张图片" % i,end='')
         except:
             pass
+    print('\r已下载完成    ')
     offset += page_size
